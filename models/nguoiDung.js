@@ -1,28 +1,33 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
-const nguoiDungSchema = mongoose.Schema({
+const nguoiDungSchema = mongoose.Schema(
+  {
     email: { type: String, required: true, trim: true },
     sdt: { type: Number, trim: true },
     matKhau: { type: String, required: true },
     hoTen: { type: String, required: true, trim: true },
-    tuoi : {type : Number, trim : true},
+    tuoi: { type: Number, trim: true },
     diaChi: { type: String },
-    dangTheoDoi: [{
+    dangTheoDoi: [
+      {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'NguoiDung'
-    }],
-    duocTheoDoi :  [{
+        ref: 'NguoiDung',
+      },
+    ],
+    duocTheoDoi: [
+      {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'NguoiDung'
-    }],
-
-},
-{
+        ref: 'NguoiDung',
+      },
+    ],
+  },
+  {
     timestamps: {
-        createdAt: 'thoiGianTao',
-        updatedAt: 'thoiGianCapNhat'
-    }
-});
+      createdAt: 'thoiGianTao',
+      updatedAt: 'thoiGianCapNhat',
+    },
+  }
+);
 
 const NguoiDung = mongoose.model('NguoiDung', nguoiDungSchema, 'nguoiDung');
 

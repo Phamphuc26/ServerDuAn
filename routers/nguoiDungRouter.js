@@ -1,8 +1,9 @@
-import express from 'express'
-import {dangKy} from '../controllers/nguoiDungController.js'
+import express from "express";
+import { dangKy, danhSachNguoiDung } from "../controllers/nguoiDungController.js";
 
-const router = express.Router()
+const router = express.Router();
 
-router.post('/dangKy',dangKy)
+router.post("/dangKy", dangKy);
+router.get("/danhSach",danhSachNguoiDung)
 
-export default router
+export default router;
