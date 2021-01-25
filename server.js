@@ -1,6 +1,8 @@
 import express from "express";
 import mongoose from "mongoose";
 import bodyParser from "body-parser";
+import {Server} from 'socket.io';
+import TinNhan from './models/tinNhan.js'
 
 import nguoiDungRouter from "./routers/nguoiDungRouter.js";
 import matHangRouter from "./routers/matHangRouter.js";
@@ -32,6 +34,29 @@ mongoose
     console.log("Lỗi kết nối đến database\n" + error);
   });
 
-app.listen(port, (req, res) => {
-  console.log(`Đang chạy trên port ${port}`);
+
+//socket.io
+const server = app.listen(port,()=>{
+  console.log(`Đang chạy trên port ${port}`)
+})
+
+const io = new Server(server);
+
+io.on("connection", (socket) => {
+  console.log(`connect ${socket.id}`);
+
+  // socket.on("guiThongBao", (cb) => {
+  //   console.log("ping");
+  socket.on("testab",(hihi)=>{
+    console.log("kkkkk")
+  })
+  TinNhan.watch().on('change',(change)=>{
+    console.log('Something has changed')
+    // io.to(change.fullDocument._id).emit('changes',change.fullDocument)
+    io.emit("thongBao",change.fullDocument)
+})
+
+  socket.on("disconnect", () => {
+    console.log(`disconnect ${socket.id}`);
+  });
 });

@@ -14,7 +14,7 @@ export async function dangBai(req, res) {
 
 export async function danhSachBaiViet(req, res) {
     
-  await BaiViet.populate.find().populate('binhLuan').then((result) => {
+  await BaiViet.find().populate('binhLuan').then((result) => {
       res.send(result);
       console.log("Danh sách bài viết");
     })
