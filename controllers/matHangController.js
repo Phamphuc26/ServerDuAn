@@ -113,3 +113,22 @@ export async function timKiemMatHang(req, res) {
     }
   });
 }
+export async function danhSachToiBan(req, res) {
+  try {
+    const matHang = await MatHang.find({idNguoiDung: req.params.id});
+    if(matHang.length <= 0) {
+      res.send({
+        thongBao: "Tôi chưa có mặt hàng nào"
+      })
+    } else {
+      res.send({
+          danhSach: matHang
+       })
+    }
+  } catch (error) {
+    res.send({
+      thongBao: "Lỗi"
+    })
+    console.error(error)
+  }
+}

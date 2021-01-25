@@ -6,6 +6,7 @@ import {
   anBaiViet,
   danhSachBaiVietAn,
   huyAnBaiViet,
+  danhSachBaiVietCuaToi,
 } from '../controllers/baiVietController.js';
 
 const router = express.Router();
@@ -16,5 +17,6 @@ router.post('/xoa/:id', xoaBaiViet)
 router.post('/an/:id', anBaiViet)
 router.post('/danhSachAn', danhSachBaiVietAn)
 router.post('/huyAn/:id', huyAnBaiViet)
+router.post('/danhSachCuaToi/:id', danhSachBaiVietCuaToi)
 
 export default router;

@@ -111,3 +111,20 @@ export async function danhSachBaiVietAn(req, res) {
     console.log(error)
   } 
 }
+export async function danhSachBaiVietCuaToi(req, res) {
+  try {
+    const baiViet = await BaiViet.find({idNguoiDung: req.params.id, trangThai: true});
+    if (baiViet.length <= 0){
+      res.send({thongBao: "Tôi chưa có bài viết nào"})
+    } else {
+      res.send({
+        danhSach: baiViet
+      })
+    }
+  } catch (error) {
+    res.send({
+      thongBao: "Lỗi"
+    })
+    console.log(error)
+  }
+}
