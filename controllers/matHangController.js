@@ -65,7 +65,7 @@ export async function chinhSuaMatHang(req, res) {
   }
 }
 export async function danhSachMatHang(req, res) {
-  await MatHang.find()
+  await MatHang.find().populate('idNguoiDung')
     .then((danhSachMatHang) => {
       if(danhSachMatHang.length <= 0){
         res.send({
@@ -84,7 +84,7 @@ export async function danhSachMatHang(req, res) {
 }
 export async function matHangChiTiet(req, res) {
   try {
-    const matHang = await MatHang.findById(req.params.id);
+    const matHang = await MatHang.findById(req.params.id).populate('idNguoiDung');
     if (!matHang) {
       res.send({
         thongBao: "Mặt hàng không tồn tại",
@@ -98,24 +98,29 @@ export async function matHangChiTiet(req, res) {
     res.send(error);
   }
 }
-export async function timKiemMatHang(req, res) {
-  const tukhoa = req.params.tuKhoa;
-  await MatHang.find({hangMuc: tukhoa}).then((result) => {
-    if (result != null) {
-      res.send({
-        thongBao: `Kết quả tìm kiếm của mặt hàng ${tukhoa}`,
-        danhSachMatHang: result,
-      });
-    } else {
-      res.send({
-        thongBao: `Không tìm thấy kết quả tìm kiếm với từ khóa ${tukhoa}`,
-      });
-    }
-  });
+export async function timKiemHangMuc(req, res) {
+  try {
+    const hangMuc = req.params.tuKhoa;
+    await MatHang.find({hangMuc: hangMuc}).then((result) => {
+      if (result.length <= 0) {
+          res.send({
+            thongBao: `Không tìm thấy kết quả tìm kiếm với mặt hàng ${hangMuc}`,
+          });
+      } else {
+        res.send({
+          thongBao: `Kết quả tìm kiếm của mặt hàng ${hangMuc}`,
+          danhSachMatHang: result,
+        });
+      }
+    });
+  } catch (error) {
+    res.send({thongBao: "Lỗi"})
+    console.log(error)
+  }
 }
 export async function danhSachToiBan(req, res) {
   try {
-    const matHang = await MatHang.find({idNguoiDung: req.params.id});
+    const matHang = await MatHang.find({idNguoiDung: req.params.id}).populate('idNguoiDung');
     if(matHang.length <= 0) {
       res.send({
         thongBao: "Tôi chưa có mặt hàng nào"
@@ -130,5 +135,20 @@ export async function danhSachToiBan(req, res) {
       thongBao: "Lỗi"
     })
     console.error(error)
+  }
+}
+export async function timKiemTieuDe(req, res) {
+  try {
+    const tieuDe = req.params.tieuDe
+    await MatHang.find({tieuDe: tieuDe}).then((result) =>{
+      if(result.length <= 0){
+        res.send({thongBao: `Không tìm thấy kết quả với từ khóa ${tieuDe}`})
+      } else{
+        res.send({thongBao: `Kết quả tìm kiếm với từ khóa ${tieuDe}`})
+      }
+    })
+  } catch (error) {
+    res.send({thongBao: "Lỗi"})
+    console.log(error)
   }
 }

@@ -15,7 +15,7 @@ router.post('/danhSach',danhSachBaiViet)
 router.post('/dangBai',dangBai)
 router.post('/xoa/:id', xoaBaiViet)
 router.post('/an/:id', anBaiViet)
-router.post('/danhSachAn', danhSachBaiVietAn)
+router.post('/danhSachAn/:id', danhSachBaiVietAn)
 router.post('/huyAn/:id', huyAnBaiViet)
 router.post('/danhSachCuaToi/:id', danhSachBaiVietCuaToi)
 

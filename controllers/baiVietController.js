@@ -15,7 +15,7 @@ export async function dangBai(req, res) {
 }
 export async function danhSachBaiViet(req, res) {
   try {
-    const baiViet = await BaiViet.find({trangThai: true});
+    const baiViet = await BaiViet.find({trangThai: true}).populate('idNguoiDung');
     if(baiViet.length <= 0) {
       res.send({
         thongBao: "Danh sách bài viết trống"
@@ -96,7 +96,10 @@ export async function huyAnBaiViet(req, res) {
 }
 export async function danhSachBaiVietAn(req, res) {
   try {
-    const baiViet = await BaiViet.find({trangThai: false})
+    const baiViet = await BaiViet.find({
+      idNguoiDung: req.params.id,
+      trangThai: false,
+    }).populate('idNguoiDung');
     if (baiViet.length <= 0) {
       res.send({thongBao: "không có bài viết ẩn"});
     } else {
@@ -113,7 +116,7 @@ export async function danhSachBaiVietAn(req, res) {
 }
 export async function danhSachBaiVietCuaToi(req, res) {
   try {
-    const baiViet = await BaiViet.find({idNguoiDung: req.params.id, trangThai: true});
+    const baiViet = await BaiViet.find({idNguoiDung: req.params.id, trangThai: true}).populate('idNguoiDung');
     if (baiViet.length <= 0){
       res.send({thongBao: "Tôi chưa có bài viết nào"})
     } else {

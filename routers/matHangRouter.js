@@ -5,8 +5,9 @@ import {
   chinhSuaMatHang,
   danhSachMatHang,
   matHangChiTiet,
-  timKiemMatHang,
+  timKiemHangMuc,
   danhSachToiBan,
+  timKiemTieuDe,
 } from '../controllers/matHangController.js';
 
 const router = express.Router();
@@ -16,6 +17,7 @@ router.post('/xoa/:id', xoaMatHang);
 router.post('/chinhSua/:id', chinhSuaMatHang);
 router.post('/danhSach', danhSachMatHang);
 router.post('/chiTiet/:id', matHangChiTiet);
-router.post('/timKiem/:tuKhoa', timKiemMatHang);
+router.post('/timKiemHangMuc/:tuKhoa', timKiemHangMuc);
 router.post('/danhSachToiBan/:id', danhSachToiBan)
+router.post('/timKiemTieuDe/:tieuDe', timKiemTieuDe);
 export default router;
