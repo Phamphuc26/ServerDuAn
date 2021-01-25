@@ -1,22 +1,42 @@
 import mongoose from 'mongoose';
-
+const Schema = mongoose.Schema;
 const matHangSchema = mongoose.Schema(
   {
-    idNguoiDung: { type: mongoose.Schema.Types.ObjectId, ref: 'NguoiDung' },
-    noiDung: { type: String },
-    linkAnh: { type: String },
-    gia: { type: Number },
-    hangMuc: { type: String },
-    diaChi: { type: String },
+    hangMuc: {
+      type: String,
+      required: true,
+    },
+    tieuDe: {
+      type: String,
+      required: true
+    },
+    noiDung: {
+      type: String,
+    },
+    linkAnh: {
+      type: [],
+      required: true,
+    },
+    giaBan: {
+      type: Number,
+      required: true,
+    },
+    diaChi: {
+      type: String,
+      required: true,
+    },
+    idNguoiDung: {
+      type: Schema.Types.Object,
+      ref: 'NguoiDung',
+      required: true,
+    },
   },
   {
-    timestamp: {
+    timestamps: {
       createdAt: 'thoiGianTao',
       updatedAt: 'thoiGianCapNhat',
     },
   }
 );
-
 const MatHang = mongoose.model('MatHang', matHangSchema, 'matHang');
-
 export default MatHang;

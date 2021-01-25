@@ -1,8 +1,20 @@
 import express from "express";
-import { dangHang } from "../controllers/matHangController.js";
+import {
+  themMatHang,
+  xoaMatHang,
+  chinhSuaMatHang,
+  danhSachMatHang,
+  matHangChiTiet,
+  timKiemMatHang,
+} from '../controllers/matHangController.js';
 
 const router = express.Router();
 
-router.post("/dangHang", dangHang);
+router.post('/dangBai', themMatHang);
+router.post('/xoa/:id', xoaMatHang);
+router.post('/chinhSua/:id', chinhSuaMatHang);
+router.post('/danhSach', danhSachMatHang);
+router.post('/chiTiet/:id', matHangChiTiet);
+router.post('/timKiem/:tuKhoa', timKiemMatHang);
 
 export default router;

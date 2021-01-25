@@ -1,25 +1,25 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const baiVietSchema = mongoose.Schema(
   {
-    idNguoiDung: { type: mongoose.Schema.Types.ObjectId, ref: "NguoiDung" },
-    noiDung: {type :String,require: true},
-    linkAnh: {type :String},
+    idNguoiDung: {type: mongoose.Schema.Types.ObjectId, ref: 'NguoiDung'},
+    noiDung: {type: String, require: true},
+    linkAnh: [],
     luotThich: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "NguoiDung",
+        ref: 'NguoiDung',
       },
     ],
+    trangThai: {type : Boolean, default: true}
   },
   {
     timestamps: {
-      createdAt: "thoiGianTao",
-      updatedAt: "thoiGianCapNhat",
+      createdAt: 'thoiGianTao',
+      updatedAt: 'thoiGianCapNhat'
     },
   }
 );
-
-const BaiViet = mongoose.model("BaiViet", baiVietSchema, "baiViet");
+const BaiViet = mongoose.model('BaiViet', baiVietSchema, 'baiViet');
 
 export default BaiViet;
