@@ -1,5 +1,3 @@
-<<<<<<< Updated upstream
-=======
 import BaiViet from "../models/baiViet.js";
 
 export async function dangBai(req, res) {
@@ -15,14 +13,13 @@ export async function dangBai(req, res) {
 }
 
 export async function danhSachBaiViet(req, res) {
-  await BaiViet.find()
-    .then((result) => {
+    
+  await BaiViet.populate.find().populate('binhLuan').then((result) => {
       res.send(result);
       console.log("Danh sách bài viết");
     })
     .catch((err) => {
-      res.send({ thongBao: "Lỗi lấy danh sách bài viết" });
-      console.log("Lỗi " + err.message);
+        res.send({thongBao : 'Lỗi lấy danh sách bài viết'})
+        console.log('Lỗi '+err.message)
     });
 }
->>>>>>> Stashed changes
