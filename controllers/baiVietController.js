@@ -1,21 +1,33 @@
 import BaiViet from "../models/baiViet.js";
+import NguoiDung from "../models/nguoiDung.js";
 
 export async function dangBai(req, res) {
-  const baiViet = new BaiViet(req.body);
-  try {
-    await baiViet.save();
-    res.send({thongBao: "Đăng bài thành công", baiViet: baiViet});
-    console.log("Đăng bài thành công ");
-  } catch (error) {
+  const BVM = {
+    noiDung: req.body.noiDung,
+    linkAnh: req.body.linkAnh,
+    idNguoiDung: req.params.id,
+  };
+  const nguoiDung = await NguoiDung.findById(req.params.id)
+  if (nguoiDung){
+    try {
+      const baiViet = new BaiViet(BVM);
+      await baiViet.save();
+      res.send({
+        thongBao: "Đã đăng bài viết thành công"
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  } else {
     res.send({
-      thongBao: "Đăng bài không thành công",
+      thongBao: "Không tìm thấy người dùng"
     });
-    console.log(error);
+    console.log("Không tìm thấy người dùng")
   }
 }
 export async function danhSachBaiViet(req, res) {
   try {
-    const baiViet = await BaiViet.find({trangThai: true}).populate('idNguoiDung');
+    const baiViet = await BaiViet.find({trangThai: true}).populate('idNguoiDung', 'hoTen');
     if(baiViet.length <= 0) {
       res.send({
         thongBao: "Danh sách bài viết trống"
@@ -27,7 +39,7 @@ export async function danhSachBaiViet(req, res) {
       });
     }
   } catch (error) {
-    res.send({thongBao: 'error'});
+    console.log(error)
   }
 }
 export async function xoaBaiViet (req, res) {
@@ -65,9 +77,6 @@ export async function anBaiViet(req, res){
       res.send({thongBao: "Không tìm thấy bài viết"})
     }
   } catch (error) {
-    res.send({
-      thongBao: "Lỗi"
-    })
     console.log(error)
   }
 }
@@ -88,46 +97,39 @@ export async function huyAnBaiViet(req, res) {
       res.send({thongBao: "Không tìm thấy bài viết"});
     }
   } catch (error) {
-    res.send({
-      thongBao: "Lỗi",
-    });
     console.log(error);
   }
 }
-export async function danhSachBaiVietAn(req, res) {
+export async function danhSachBaiVietBanBe(req, res) {
   try {
-    const baiViet = await BaiViet.find({
-      idNguoiDung: req.params.id,
-      trangThai: false,
-    }).populate('idNguoiDung');
-    if (baiViet.length <= 0) {
-      res.send({thongBao: "không có bài viết ẩn"});
-    } else {
-     
-       res.send({
-         thongBao: "Danh sách bài viết ẩn",
-         danhSachBaiViet: baiViet,
-       });
-    }
-  } catch (error) {
-    res.send({thongBao: "Lỗi"})
-    console.log(error)
-  } 
-}
-export async function danhSachBaiVietCuaToi(req, res) {
-  try {
-    const baiViet = await BaiViet.find({idNguoiDung: req.params.id, trangThai: true}).populate('idNguoiDung');
+    const baiViet = await BaiViet.find({idNguoiDung: req.params.id, trangThai: true}).populate('idNguoiDung','hoTen');
     if (baiViet.length <= 0){
-      res.send({thongBao: "Tôi chưa có bài viết nào"})
+      res.send({thongBao: "Danh sách trống"})
     } else {
       res.send({
         danhSach: baiViet
       })
     }
   } catch (error) {
-    res.send({
-      thongBao: "Lỗi"
-    })
+    console.log(error)
+  }
+}
+export async function xemTrangCaNhanCuaToi(req, res) {
+  try {
+    const nguoi = await NguoiDung.findById(req.params.id)
+    const baiViet = await BaiViet.find({idNguoiDung : req.params.id})
+    if(baiViet.length <= 0) {
+      res.send({
+        thongBao: "Danh sách bài viết trống"
+      })
+    } else {
+      res.send({
+        thongBao: "Danh sách bài viết",
+        nguoiDung : nguoi,
+        danhSachBaiViet: baiViet,
+      });
+    }
+  } catch (error) {
     console.log(error)
   }
 }

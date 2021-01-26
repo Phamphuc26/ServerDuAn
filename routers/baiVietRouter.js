@@ -4,19 +4,23 @@ import {
   danhSachBaiViet,
   xoaBaiViet,
   anBaiViet,
-  danhSachBaiVietAn,
+  // danhSachBaiVietAn,
   huyAnBaiViet,
-  danhSachBaiVietCuaToi,
+  // danhSachBaiVietCuaToi,
+  xemTrangCaNhanCuaToi,
+  danhSachBaiVietBanBe,
 } from '../controllers/baiVietController.js';
 
 const router = express.Router();
 
-router.post('/danhSach',danhSachBaiViet)
-router.post('/dangBai',dangBai)
+router.get('/danhSach',danhSachBaiViet)
+router.get('/caNhan/:id', xemTrangCaNhanCuaToi);
+router.post('/dangBai/:id',dangBai)
 router.post('/xoa/:id', xoaBaiViet)
 router.post('/an/:id', anBaiViet)
-router.post('/danhSachAn/:id', danhSachBaiVietAn)
+router.get('/baiVietBanBe/:id', danhSachBaiVietBanBe)
+// router.post('/danhSachAn/:id', danhSachBaiVietAn)
 router.post('/huyAn/:id', huyAnBaiViet)
-router.post('/danhSachCuaToi/:id', danhSachBaiVietCuaToi)
+// router.post('/danhSachCuaToi/:id', danhSachBaiVietCuaToi)
 
 export default router;
