@@ -46,19 +46,14 @@ export async function danhSachDangTheoDoi(req, res) {
     if(nguoiDung){
       const dangTheoDoi = nguoiDung.dangTheoDoi;
       if(dangTheoDoi.length > 0){
-        var mang = [];
-        console.log(mang)
         for (let index = 0; index < dangTheoDoi.length ; index++) {
-          const element = dangTheoDoi[index];
-          const dsBaiViet = await BaiViet.find({idNguoiDung : element,trangThai : true}).populate('idNguoiDung','hoTen')
-          // console.log(element)
-          console.log(dsBaiViet.length)
-          mang = mang.concat(dsBaiViet)
-          
-        }
-        console.log(`Mảng cuối :${mang}`)
-        res.send({danhSachBaiViet : mang})
-        
+        const dsBaiViet = await BaiViet.aggregate([
+          { $match : {idNguoiDung : dangTheoDoi[index], trangThai : true}},
+          { $sort : {thoiGianTao : - 1} }
+        ])
+        console.log(`mảng đang chạy :  ${dsBaiViet}`)
+        res.send(dsBaiViet)
+      }
       }
     }else{
       res.send({thongBao : "Không tìm thấy người dùng"})
@@ -68,6 +63,35 @@ export async function danhSachDangTheoDoi(req, res) {
     console.log(error)
   }
 }
+
+// export async function danhSachDangTheoDoi(req, res) {
+//   try {
+//     const nguoiDung = await NguoiDung.findById(req.params.id);
+//     if(nguoiDung){
+//       const dangTheoDoi = nguoiDung.dangTheoDoi;
+//       if(dangTheoDoi.length > 0){
+//         var mang = [];
+//         console.log(mang)
+//         for (let index = 0; index < dangTheoDoi.length ; index++) {
+//           const element = dangTheoDoi[index];
+//           const dsBaiViet = await BaiViet.find({idNguoiDung : element,trangThai : true}).populate('idNguoiDung','hoTen')
+//           // console.log(element)
+//           console.log(dsBaiViet.length)
+//           mang = mang.concat(dsBaiViet)
+          
+//         }
+//         console.log(`Mảng cuối :${mang}`)
+//         res.send({danhSachBaiViet : mang})
+        
+//       }
+//     }else{
+//       res.send({thongBao : "Không tìm thấy người dùng"})
+//       console.log("Không tìm thấy người dùng")
+//     }
+//   } catch (error) {
+//     console.log(error)
+//   }
+// }
 export async function xoaBaiViet (req, res) {
   try {
     const baiViet = await BaiViet.findById(req.params.id)

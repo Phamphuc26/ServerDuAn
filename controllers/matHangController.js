@@ -143,11 +143,12 @@ export async function danhSachToiBan(req, res) {
 export async function timKiemTieuDe(req, res) {
   try {
     const tieuDe = req.params.tieuDe
-    await MatHang.find({tieuDe: tieuDe}).then((result) =>{
+    await MatHang.find({tieuDe: {$regex : tieuDe,$options : 'i'}}).then((result) =>{
       if(result.length <= 0){
         res.send({thongBao: `Không tìm thấy kết quả với từ khóa ${tieuDe}`})
       } else{
-        res.send({thongBao: `Kết quả tìm kiếm với từ khóa ${tieuDe}`})
+        res.send({thongBao: `Kết quả tìm kiếm với từ khóa ${tieuDe}`,danhSachMatHang : result}
+        ,)
       }
     })
   } catch (error) {
