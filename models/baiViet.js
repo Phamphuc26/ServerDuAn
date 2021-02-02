@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 const baiVietSchema = mongoose.Schema(
   {
     idNguoiDung: {type: mongoose.Schema.Types.ObjectId, ref: 'NguoiDung'},
+    tieuDe : {type : String},
     noiDung: {type: String, require: true},
     linkAnh: [],
     luotThich: [

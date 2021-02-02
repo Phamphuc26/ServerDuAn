@@ -4,7 +4,8 @@ const tinNhanSchema = mongoose.Schema(
   {
     idNguoiGui: { type: mongoose.Schema.Types.ObjectId, ref: 'NguoiDung' },
     idNguoiNhan: { type: mongoose.Schema.Types.ObjectId, ref: 'NguoiDung' },
-    noiDung : {type : String}
+    noiDung : {type : String},
+    linkAnh : {type : String}
   },
   {
     timestamps: {

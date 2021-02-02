@@ -2,18 +2,21 @@ import MatHang from "../models/matHang.js";
 
 export async function themMatHang(req, res) {
   const matHangMoi = new MatHang(req.body);
-  try {
-    await matHangMoi.save();
-    res.send({
-      thongBao: "Thêm mặt hàng thành công",
-      matHang: matHangMoi,
-    });
-  } catch (error) {
-    res.send({
-      thongBao: "Thêm mặt hàng không thành công"
-    })
-    console.log(error);
-  }
+  console.log(req.body.idTest)
+  console.log(req.body.idNguoiDung._id)
+  console.log(matHangMoi);
+  // try {
+  //   await matHangMoi.save();
+  //   res.send({
+  //     thongBao: "Thêm mặt hàng thành công",
+  //     matHang: matHangMoi,
+  //   });
+  // } catch (error) {
+  //   res.send({
+  //     thongBao: "Thêm mặt hàng không thành công"
+  //   })
+  //   console.log(error);
+  // }
 }
 export async function xoaMatHang(req, res) {
   try {

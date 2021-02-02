@@ -33,10 +33,36 @@ export async function danhSachBaiViet(req, res) {
         thongBao: "Danh sách bài viết trống"
       })
     } else {
-      res.send({
-        thongBao: "Danh sách bài viết",
-        danhSachBaiViet: baiViet,
-      });
+      res.send(baiViet);
+    }
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export async function danhSachDangTheoDoi(req, res) {
+  try {
+    const nguoiDung = await NguoiDung.findById(req.params.id);
+    if(nguoiDung){
+      const dangTheoDoi = nguoiDung.dangTheoDoi;
+      if(dangTheoDoi.length > 0){
+        var mang = [];
+        console.log(mang)
+        for (let index = 0; index < dangTheoDoi.length ; index++) {
+          const element = dangTheoDoi[index];
+          const dsBaiViet = await BaiViet.find({idNguoiDung : element,trangThai : true}).populate('idNguoiDung','hoTen')
+          // console.log(element)
+          console.log(dsBaiViet.length)
+          mang = mang.concat(dsBaiViet)
+          
+        }
+        console.log(`Mảng cuối :${mang}`)
+        res.send({danhSachBaiViet : mang})
+        
+      }
+    }else{
+      res.send({thongBao : "Không tìm thấy người dùng"})
+      console.log("Không tìm thấy người dùng")
     }
   } catch (error) {
     console.log(error)
@@ -100,36 +126,25 @@ export async function huyAnBaiViet(req, res) {
     console.log(error);
   }
 }
-export async function danhSachBaiVietBanBe(req, res) {
-  try {
-    const baiViet = await BaiViet.find({idNguoiDung: req.params.id, trangThai: true}).populate('idNguoiDung','hoTen');
-    if (baiViet.length <= 0){
-      res.send({thongBao: "Danh sách trống"})
-    } else {
-      res.send({
-        danhSach: baiViet
-      })
-    }
-  } catch (error) {
-    console.log(error)
-  }
-}
-export async function xemTrangCaNhanCuaToi(req, res) {
-  try {
-    const nguoi = await NguoiDung.findById(req.params.id)
-    const baiViet = await BaiViet.find({idNguoiDung : req.params.id})
-    if(baiViet.length <= 0) {
-      res.send({
-        thongBao: "Danh sách bài viết trống"
-      })
-    } else {
-      res.send({
-        thongBao: "Danh sách bài viết",
-        nguoiDung : nguoi,
-        danhSachBaiViet: baiViet,
-      });
-    }
-  } catch (error) {
-    console.log(error)
-  }
-}
+
+
+
+// export async function xemTrangCaNhanCuaToi(req, res) {
+//   try {
+//     const nguoi = await NguoiDung.findById(req.params.id)
+//     const baiViet = await BaiViet.find({idNguoiDung : req.params.id})
+//     if(baiViet.length <= 0) {
+//       res.send({
+//         thongBao: "Danh sách bài viết trống"
+//       })
+//     } else {
+//       res.send({
+//         thongBao: "Danh sách bài viết",
+//         nguoiDung : nguoi,
+//         danhSachBaiViet: baiViet,
+//       });
+//     }
+//   } catch (error) {
+//     console.log(error)
+//   }
+// }

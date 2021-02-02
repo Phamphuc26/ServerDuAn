@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import bodyParser from "body-parser";
 import {Server} from 'socket.io';
 import TinNhan from './models/tinNhan.js'
+import NguoiDung from './models/nguoiDung.js'
 
 import nguoiDungRouter from "./routers/nguoiDungRouter.js";
 import matHangRouter from "./routers/matHangRouter.js";
@@ -48,12 +49,14 @@ io.on("connection", (socket) => {
   // socket.on("guiThongBao", (cb) => {
   //   console.log("ping");
   socket.on("testab",(hihi)=>{
-    console.log("kkkkk")
+    console.log("Nhàn đẹp trai quá")
   })
+  // io.emit("thongBao","Nhàn đẹp trai vl")
   TinNhan.watch().on('change',(change)=>{
     console.log('Something has changed')
     // io.to(change.fullDocument._id).emit('changes',change.fullDocument)
-    io.emit("thongBao",change.fullDocument)
+     
+    io.emit("thongBao","có tin nhắn mới")
 })
 
   socket.on("disconnect", () => {
