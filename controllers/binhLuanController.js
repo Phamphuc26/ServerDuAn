@@ -1,20 +1,45 @@
 import BinhLuan from "../models/binhLuan.js";
 import BaiViet from "../models/baiViet.js";
 
-export async function binhLuan(req, res) {
-  const {idNguoiDung,idBaiViet,noiDung} = req.body
-  const binhLuan = new BinhLuan({idNguoiDung : idNguoiDung,noiDung : noiDung});
+export async function binhLuan(req, res){
+  const binhLuanMoi = {
+    noiDung: req.body.noiDung,
+    idBaiViet : req.body.idBaiViet,
+    idNguoiDung: req.params.id,
+  };
   try {
-    await binhLuan.save();
-    await BaiViet.updateOne({_id : idBaiViet},{$push : {binhLuan : binhLuan}})
-    res.send({ thongBao: "Bình luận thành công !" });
-    console.log("Bình luận thành công !");
+    const baiViet = await BaiViet.findById(req.body.idBaiViet);
+    if(baiViet){
+      const binhLuan = new BinhLuan(binhLuanMoi);
+      await binhLuan.save();
+      res.send({
+        thongBao: "Bình luận thành công"
+      })
+    } else {
+      res.send({thongBao: "Không tìm thấy bài viết"})
+    }
   } catch (error) {
-    res.send({ thongBao: "Bình luận không thành công !" });
     console.log("Bình luận không thành công !");
+    throw new Error("Bình luận không thành công !" );
   }
 }
 
+export async function binhLuanCuaBaiViet(req, res){
+  try {
+    const baiViet = await BaiViet.findById(req.params.id);
+    if(baiViet){
+      const danhSachBinhLuan = await BinhLuan.find({idBaiViet : req.params.id}).populate('idNguoiDung','hoTen')
+      res.send({
+        danhSachBinhLuan : danhSachBinhLuan
+      })
+    } else {
+      res.send({thongBao: "Không tìm thấy bài viết"})
+    }
+  } catch (error) {
+    console.log("Bình luận không thành công !");
+    throw new Error("Bình luận không thành công !" );
+  }
+}
 export async function danhSachBinhLuan(req, res) {
     
   await BinhLuan.find().then((result) => {

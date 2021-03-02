@@ -92,6 +92,8 @@ export async function danhSachDangTheoDoi(req, res) {
 //     console.log(error)
 //   }
 // }
+
+
 export async function xoaBaiViet (req, res) {
   try {
     const baiViet = await BaiViet.findById(req.params.id)
@@ -106,7 +108,7 @@ export async function xoaBaiViet (req, res) {
       })
     }
   } catch (error) {
-    res.send({thongBao: "Lỗi"})
+    throw new Error("Lỗi")
     console.log(error)
   }
 }
@@ -114,14 +116,29 @@ export async function anBaiViet(req, res){
   try {
     const baiViet = await BaiViet.findById(req.params.id)
     if(baiViet){
-      const baiViet2 = {
+      const anBai = {
         $set: {
           trangThai: false,
         }
       }
-      await BaiViet.updateOne({_id: req.params.id}, baiViet2)
+      await BaiViet.updateOne({_id: req.params.id}, anBai)
       res.send({
         thongBao: `Đã ẩn bài viết ${baiViet.noiDung}`
+      })
+    } else {
+      res.send({thongBao: "Không tìm thấy bài viết"})
+    }
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export async function chiTietBaiViet(req, res){
+  try {
+    const baiViet = await BaiViet.findById(req.params.id).populate('idNguoiDung','hoTen')
+    if(baiViet){
+      res.send({
+        baiViet: baiViet
       })
     } else {
       res.send({thongBao: "Không tìm thấy bài viết"})
@@ -151,24 +168,31 @@ export async function huyAnBaiViet(req, res) {
   }
 }
 
-
-
-// export async function xemTrangCaNhanCuaToi(req, res) {
-//   try {
-//     const nguoi = await NguoiDung.findById(req.params.id)
-//     const baiViet = await BaiViet.find({idNguoiDung : req.params.id})
-//     if(baiViet.length <= 0) {
-//       res.send({
-//         thongBao: "Danh sách bài viết trống"
-//       })
-//     } else {
-//       res.send({
-//         thongBao: "Danh sách bài viết",
-//         nguoiDung : nguoi,
-//         danhSachBaiViet: baiViet,
-//       });
-//     }
-//   } catch (error) {
-//     console.log(error)
-//   }
-// }
+export async function chinhSuaBaiViet(req, res) {
+  try {
+    const baiViet = await BaiViet.findById(req.params.id);
+    if (!baiViet) {
+      res.send({
+        thongBao: "Bài viết không tồn tại",
+      });
+    } else {
+      const capNhat = {
+        // linkAnhMoi = req.body.linkAnh,
+        // $push: {linkAnh: linkAnhMoi},
+        $set: {
+          linkAnh: req.body.linkAnh,
+          noiDung: req.body.noiDung,
+        },
+      };
+      await BaiViet.updateOne({_id: req.params.id},capNhat );
+      // const linkAnh = matHang.linkAnh
+      res.send({
+        thongBao: "Cập nhật thành công",
+      });
+    }
+  } catch (error) {
+    console.log(error)
+    throw new Error("Lỗi")
+    
+  }
+}

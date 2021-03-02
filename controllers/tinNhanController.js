@@ -1,4 +1,5 @@
 import TinNhan from '../models/tinNhan.js'
+import mongoose from 'mongoose';
 
 export async function nhanTin(req,res){
     const tinNhan = new TinNhan(req.body)
@@ -21,6 +22,21 @@ export async function danhSachTinNhan(req,res){
     });
   }
 
-export async function abc(req,res){
-    res.send({noiDung : "Test ok"})
+export async function danhSachLienHe(req,res){
+  const idNguoiDung = mongoose.Types.ObjectId(req.params.id)
+  // const list = await TinNhan.aggregate([
+  //   { $match: { $or: [ { idNguoiGui: idNguoiDung }, { idNguoiNhan: idNguoiDung } ] } },
+  //   { $group: { _id: { "nguoiGui":"$idNguoiGui","nguoiNhan":"$idNguoiNhan"} } },    
+  // ] )
+  
+  // res.send(list)
+  await TinNhan.find({ $or: [ { idNguoiGui: idNguoiDung }, { idNguoiNhan: idNguoiDung } ] }).then((result) => {
+    res.send(result)
+    console.log('Danh sách liên hệ')
+  }).catch((err) => {
+    res.send('Lỗi lấy danh sách tin nhắn')
+  });
+
+  
+  
 }

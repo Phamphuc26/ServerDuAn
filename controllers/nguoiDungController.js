@@ -18,6 +18,30 @@ export async function dangKy(req, res) {
   }
 }
 
+export async function dangNhap(req, res) {
+  const {sdt,matKhau} = req.body
+  try {
+    const nguoiDung = await NguoiDung.findOne({sdt : sdt})
+    if (nguoiDung) {
+      if(matKhau == nguoiDung.matKhau){
+        res.send({
+          thongBao: `Đăng nhập thành công !`,
+        });
+      }else if(matKhau != nguoiDung.matKhau){
+        res.send({
+          thongBao: `Sai mật khẩu !`,
+        });
+      }
+    } else {
+      res.send({
+        thongBao: `Tài khoản không tồn tại !`,
+      });
+    }
+  } catch (err) {
+    res.status(400).send(err.message);
+  }
+}
+
 export async function danhSachNguoiDung(req,res){
 
   await NguoiDung.find().then(async(nguoiDung) => {

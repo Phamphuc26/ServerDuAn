@@ -61,10 +61,9 @@ export async function chinhSuaMatHang(req, res) {
       });
     }
   } catch (error) {
-    res.send({
-      thongBao: "Cập nhật lỗi"
-    })
     console.log(error)
+    throw new Error("Cập nhật lõi")
+    
   }
 }
 export async function danhSachMatHang(req, res) {

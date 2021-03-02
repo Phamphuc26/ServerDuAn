@@ -7,13 +7,16 @@ import {
   // danhSachBaiVietAn,
   huyAnBaiViet,
   danhSachDangTheoDoi,
+  chiTietBaiViet,
+  chinhSuaBaiViet,
 } from "../controllers/baiVietController.js";
 
 const router = express.Router();
 
 router.get("/danhSach", danhSachBaiViet);
-// router.get("/caNhan/:id", xemTrangCaNhanCuaToi);
+router.get("/chiTiet/:id", chiTietBaiViet);
 router.post("/dangBai/:id", dangBai);
+router.post("/capNhat/:id", chinhSuaBaiViet);
 router.post("/xoa/:id", xoaBaiViet);
 router.post("/an/:id", anBaiViet);
 router.get("/dangTheoDoi/:id",danhSachDangTheoDoi);
