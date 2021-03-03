@@ -50,7 +50,11 @@ io.on("connection", (socket) => {
   //   console.log("ping");
   socket.on("testab",(hihi)=>{
     console.log("Nhàn đẹp trai quá")
+    console.log(hihi)
+    socket.id = hihi
+    
   })
+  io.to(socket.id).emit("tinNhan", `Server nhắn cho ${socket.id}`);
   // io.emit("thongBao","Nhàn đẹp trai vl")
   TinNhan.watch().on('change',(change)=>{
     console.log('Something has changed')

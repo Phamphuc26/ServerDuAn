@@ -12,7 +12,8 @@ const baiVietSchema = mongoose.Schema(
         ref: 'NguoiDung',
       },
     ],
-    trangThai: {type : Boolean, default: true}
+    trangThai: {type : Boolean, default: true},
+    duyetBai: {type : Boolean, default: false}
   },
   {
     timestamps: {

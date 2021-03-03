@@ -27,7 +27,7 @@ export async function dangBai(req, res) {
 }
 export async function danhSachBaiViet(req, res) {
   try {
-    const baiViet = await BaiViet.find({trangThai: true}).populate('idNguoiDung', 'hoTen');
+    const baiViet = await BaiViet.find({trangThai: true,duyetBai: true}).populate('idNguoiDung', 'hoTen');
     if(baiViet.length <= 0) {
       res.send({
         thongBao: "Danh sách bài viết trống"
@@ -45,9 +45,10 @@ export async function danhSachDangTheoDoi(req, res) {
     const nguoiDung = await NguoiDung.findById(req.params.id);
     if(nguoiDung){
       const dangTheoDoi = nguoiDung.dangTheoDoi;
+      let dsBaiViet
       if(dangTheoDoi.length > 0){
         for (let index = 0; index < dangTheoDoi.length ; index++) {
-        const dsBaiViet = await BaiViet.aggregate([
+         dsBaiViet = await BaiViet.aggregate([
           { $match : {idNguoiDung : dangTheoDoi[index], trangThai : true}},
           { $sort : {thoiGianTao : - 1} }
         ])

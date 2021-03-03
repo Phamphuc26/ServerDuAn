@@ -1,22 +1,33 @@
 import MatHang from "../models/matHang.js";
 
 export async function themMatHang(req, res) {
-  const matHangMoi = new MatHang(req.body);
-  console.log(req.body.idTest)
-  console.log(req.body.idNguoiDung._id)
-  console.log(matHangMoi);
-  // try {
-  //   await matHangMoi.save();
-  //   res.send({
-  //     thongBao: "Thêm mặt hàng thành công",
-  //     matHang: matHangMoi,
-  //   });
-  // } catch (error) {
-  //   res.send({
-  //     thongBao: "Thêm mặt hàng không thành công"
-  //   })
-  //   console.log(error);
-  // }
+    const MHM = {
+      tieuDe: req.body.tieuDe,
+      giaBan: req.body.giaBan,
+      hangMuc: req.body.hangMuc,
+      diaChi: req.body.diaChi,
+      noiDung: req.body.noiDung,
+      linkAnh: req.body.linkAnh,
+      idNguoiDung: req.params.id,
+    };
+    const nguoiDung = await NguoiDung.findById(req.params.id)
+    if (nguoiDung){
+      try {
+        const matHang = new MatHang(MHM);
+        await matHang.save();
+        res.send({
+          thongBao: "Đã đăng hàng thành công"
+        })
+      } catch (error) {
+        console.log(error)
+      }
+    } else {
+      res.send({
+        thongBao: "Không tìm thấy người dùng"
+      });
+      console.log("Không tìm thấy người dùng")
+    }
+  
 }
 export async function xoaMatHang(req, res) {
   try {
@@ -155,3 +166,4 @@ export async function timKiemTieuDe(req, res) {
     console.log(error)
   }
 }
+
